@@ -1,7 +1,13 @@
 #!/usr/bin/python
 
-import pickle
-import cPickle
+try:
+    import _pickle as pickle
+    READ_MODE = 'rb'
+except ImportError:
+    try: import cPickle as pickle
+    except ImportError: import pickle
+    READ_MODE = 'r'
+
 import numpy
 
 from sklearn.model_selection import train_test_split
@@ -29,12 +35,12 @@ def preprocess(words_file = "../tools/word_data.pkl", authors_file="../tools/ema
 
     ### the words (features) and authors (labels), already largely preprocessed
     ### this preprocessing will be repeated in the text learning mini-project
-    authors_file_handler = open(authors_file, "r")
+    authors_file_handler = open(authors_file, READ_MODE)
     authors = pickle.load(authors_file_handler)
     authors_file_handler.close()
 
-    words_file_handler = open(words_file, "r")
-    word_data = cPickle.load(words_file_handler)
+    words_file_handler = open(words_file, READ_MODE)
+    word_data = pickle.load(words_file_handler)
     words_file_handler.close()
 
     ### test_size is the percentage of events assigned to the test set
